@@ -59,11 +59,21 @@ const Withdraw: React.FC = () => {
                     return;
                 }
 
-                addToast({
-                    type: 'error',
-                    title: 'Erro no saque',
-                    description: 'Ocorreu um erro ao tentar realizar um saque, tente novamente mais tarde.',
-                });
+                if (error.response.status === 500) {
+                    addToast({
+                        type: 'error',
+                        title: 'Erro no Cadastro',
+                        description: 'Ocorreu um erro ao se cadastrar, tente novamente mais tarde.',
+                    });
+                } else {
+                    console.log(error.response);
+
+                    addToast({
+                        type: 'error',
+                        title: 'Erro no Cadastro',
+                        description: error.response.data.message,
+                    });
+                }
             }
         },
         [addToast, history, updateUser],
