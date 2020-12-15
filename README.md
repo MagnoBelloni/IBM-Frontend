@@ -6,7 +6,7 @@ A Versão Backend pode ser acessada clicando [aqui](https://github.com/MagnoBell
 
 ## O Desafio
 
-![Preview](https://github.com/MagnoBelloni/IBM-Frontend/blob/main/imagem-desafio.png)
+![Preview](https://github.com/MagnoBelloni/IBM-Frontend/blob/main/Imagem-Desafio.png)
 
 ## Início
 
