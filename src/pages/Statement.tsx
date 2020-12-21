@@ -5,10 +5,12 @@ import { useAuth } from '../hooks/auth';
 import api from '../services/api';
 
 interface Transaction {
+    id: number;
     type: string;
     value: number;
     oldBalance: number;
     newBalance: number;
+    createdAt: string;
     date: string;
     to: string;
     from: string;
@@ -20,22 +22,20 @@ const Statement: React.FC = () => {
 
     const formattedTypes = {
         "income transfer": ["Transferencia recebida", "bg-success text-white"],
-        "outgoing transfer": ["Transferencia enviada", "bg-info text-white"],
+        "outcome transfer": ["Transferencia enviada", "bg-info text-white"],
         "deposit": ["Deposito", "bg-success text-white"],
         "withdraw": ["Saque", "bg-danger text-white"]
     }
 
     useEffect(() => {
-
-
         api.get('/transaction')
             .then(response => {
-                const transactionsFormatted = response.data[0].transactions
+                const transactionsFormatted = response.data
                     .map((transaction: Transaction) => {
                         return {
                             ...transaction,
                             // type: (formattedTypes as any)[transaction.type][0] || 'Outro',
-                            date: format(parseISO(transaction.date), 'HH:mm dd/MM/yyyy')
+                            date: format(parseISO(transaction.createdAt), 'HH:mm dd/MM/yyyy')
                         }
                     })
                 setTransactions(transactionsFormatted)
@@ -56,7 +56,7 @@ const Statement: React.FC = () => {
                                     <h5 className="card-title">Saldo: R${user.balance}</h5>
                                 </div>
                             </div>
-                            <table className="table">
+                            <table className="mt-5 table table-hover table-bordered">
                                 <thead>
                                     <tr>
                                         <th scope="col">Tipo</th>
@@ -70,7 +70,7 @@ const Statement: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     {transactions.map(transaction => (
-                                        <tr key={`${transaction.value} - ${transaction.date} - ${transaction.to}`} className={(formattedTypes as any)[transaction.type][1]}>
+                                        <tr key={transaction.id} className={(formattedTypes as any)[transaction.type][1] || 'bg-info text-white'}>
                                             <td>{(formattedTypes as any)[transaction.type][0] || 'Outro'}</td>
                                             <td>{transaction.value}</td>
                                             <td>{transaction.oldBalance}</td>
